@@ -1,6 +1,14 @@
 import scipy as sp
 import numpy as np
 #test
+def ReLU(x):
+    if not isinstance(x, np.ndarray):
+        raise TypeError("exxpected type np.ndarray")
+    for i, index in enumerate(x):
+        if x[i] < 0:
+            x[i] = 0
+    return x
+
 def Train_Neural_Net(X, y, n_outputs, n_layers, n_nodes):
     if not isinstance(X, np.ndarray):
         raise TypeError("expected type np.ndarray")
@@ -16,19 +24,28 @@ def Train_Neural_Net(X, y, n_outputs, n_layers, n_nodes):
         raise IndexError(f"number of layers ({n_layers}) given by variable n_layers is different to the number of layers given ({len(n_nodes)}) by n_nodes")
     # Go through NN once and set weights - 
     # Then use backprop to train the network
-    # Then return the trained model with weights + nodes so that only an X can be passed thorugh
-    
+    # Then return the trained model with weights + nodes so that only an X can be passed through
     weights = {}
     weights["0"] = np.random.randn(n_nodes[0], len(X))  # np.ones((n_nodes[0], len(X)))
     for i in range(1, n_layers):
         weights[f"{i}"] = np.random.randn(n_nodes[i], n_nodes[i-1])   # np.ones((n_nodes[i], n_nodes[i-1]))
     weights[f"{n_layers}"] = np.random.randn(1, n_nodes[i-1])   # np.ones((1, n_nodes[i-1]))
     layer_nodes = {}
-    layer_nodes["l1"] = weights["0"] @ X
+    layer_nodes["l1"] = ReLU(x = weights["0"] @ X)
     for i in range(2, n_layers+1):
-        layer_nodes[f"l{i}"] = weights[f"{i-1}"] @ layer_nodes[f"l{i-1}"]
+        layer_nodes[f"l{i}"] = ReLU(x = weights[f"{i-1}"] @ layer_nodes[f"l{i-1}"])
+    
+    
     return layer_nodes, n_layers, n_nodes, n_outputs, weights
 
+class Dog:
+    def __init__(self, name, breed):
+        self.name = name
+        self.breed = breed
+
+    def bark(self):
+        return f"{self.name} says woof!"
+    
 
 def complete():
     # Placeholder
@@ -71,6 +88,16 @@ def final_layer(w, prev_nodes):
 
 #response = ReLU(x = np.array([-0.2,0.5,0.3,-1.2]))
 #print(response)
+class NN:
+        def __init__(self, layer_nodes, n_layers, n_nodes, n_outputs, weights):
+            self.layer_nodes = layer_nodes
+            self.n_layers = n_layers
+            self.n_nodes = n_nodes
+            self.n_outputs = n_outputs
+            self.weights = weights
 
-sdft = Train_Neural_Net(X = np.array([3,2,1]), y = np.array([1,0,0]), n_outputs = 2, n_layers = 5, n_nodes = np.array([3,3,6,5,4]))
-print(sdft)
+
+layer_nodes, n_layers, n_nodes, n_outputs, weights = Train_Neural_Net(X = np.array([3,2,1]), y = np.array([1,0,0]), n_outputs = 2, n_layers = 5, n_nodes = np.array([3,3,6,5,4]))
+model = NN(layer_nodes=layer_nodes,n_layers=n_layers,n_nodes=n_nodes,n_outputs=n_outputs,weights=weights)
+
+print(model.layer_nodes)

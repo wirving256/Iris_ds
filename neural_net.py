@@ -38,14 +38,6 @@ def Train_Neural_Net(X, y, n_outputs, n_layers, n_nodes):
     
     return layer_nodes, n_layers, n_nodes, n_outputs, weights
 
-class Dog:
-    def __init__(self, name, breed):
-        self.name = name
-        self.breed = breed
-
-    def bark(self):
-        return f"{self.name} says woof!"
-    
 
 def complete():
     # Placeholder

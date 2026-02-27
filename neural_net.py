@@ -48,15 +48,6 @@ def back_prop():
     return 0
 
 
-
-def ReLU(x):
-    if not isinstance(x, np.ndarray):
-        raise TypeError("exxpected type np.ndarray")
-    for i, index in enumerate(x):
-        if x[i] < 0:
-            x[i] = 0
-    return x
-
 def forward(w, prev_nodes):
     if not isinstance(w, np.ndarray):
         raise TypeError("expected type np.ndarray")

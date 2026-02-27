@@ -14,20 +14,20 @@ def Train_Neural_Net(X, y, n_outputs, n_layers, n_nodes):
         raise TypeError("expected type np.ndarray")
     if n_layers != len(n_nodes):
         raise IndexError(f"number of layers ({n_layers}) given by variable n_layers is different to the number of layers given ({len(n_nodes)}) by n_nodes")
-    # Go through NN once and set weights
+    # Go through NN once and set weights - 
     # Then use backprop to train the network
     # Then return the trained model with weights + nodes so that only an X can be passed thorugh
     
     weights = {}
-    weights["0"] = np.ones((n_nodes[0], len(X)))
+    weights["0"] = np.random.randn(n_nodes[0], len(X))  # np.ones((n_nodes[0], len(X)))
     for i in range(1, n_layers):
-        # Store in a dictionary with a tuple shape
-        weights[f"{i}"] = np.ones((n_nodes[i], n_nodes[i-1]))
-    weights[f"{n_layers}"] = np.ones((1, n_nodes[i-1]))
-    l1n = weights["0"] @ X
-    for element in weights:
-        print(element)
-    return l1n, n_layers, n_nodes, n_outputs, weights
+        weights[f"{i}"] = np.random.randn(n_nodes[i], n_nodes[i-1])   # np.ones((n_nodes[i], n_nodes[i-1]))
+    weights[f"{n_layers}"] = np.random.randn(1, n_nodes[i-1])   # np.ones((1, n_nodes[i-1]))
+    layer_nodes = {}
+    layer_nodes["l1"] = weights["0"] @ X
+    for i in range(2, n_layers+1):
+        layer_nodes[f"l{i}"] = weights[f"{i-1}"] @ layer_nodes[f"l{i-1}"]
+    return layer_nodes, n_layers, n_nodes, n_outputs, weights
 
 
 def complete():
@@ -72,5 +72,5 @@ def final_layer(w, prev_nodes):
 #response = ReLU(x = np.array([-0.2,0.5,0.3,-1.2]))
 #print(response)
 
-sdft = Train_Neural_Net(X = np.array([3,2,1]), y = np.array([1,0,0]), n_outputs = 2, n_layers = 2, n_nodes = np.array([3,3]))
+sdft = Train_Neural_Net(X = np.array([3,2,1]), y = np.array([1,0,0]), n_outputs = 2, n_layers = 5, n_nodes = np.array([3,3,6,5,4]))
 print(sdft)
